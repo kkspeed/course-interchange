@@ -20,6 +20,7 @@ class Curl:
 		self.curl.setopt (pycurl.HEADER, 1)
 		self.curl.setopt (pycurl.WRITEFUNCTION, self.reader.write)
 		self.curl.setopt (pycurl.FOLLOWLOCATION, 1)
+		self.curl.setopt (pycurl.COOKIEFILE, '')
 
 	def __dict_to_cookie__ (self, cookies):
 		for key, value in cookies.items ():
@@ -27,7 +28,7 @@ class Curl:
 		cookie = cookie[0 : len(cookie) - 1]
 
 		return cookie
-		
+
 	def get_content (self, url, timeout = None, cookies = None, data = None):
 		self.curl.setopt (pycurl.URL, url)
 
@@ -45,10 +46,11 @@ class Curl:
 		self.curl.perform ()
 
 		http_status = int (self.curl.getinfo (pycurl.HTTP_CODE))
+		session_cookie = self.curl.getinfo (pycurl.INFO_COOKIELIST)
 
 		content = self.reader.getvalue ()
 
-		return content ,http_status
+		return content ,http_status, session_cookie
 
 	def post_data (self, url, timeout = None, cookies = None, data = None):
 		post_fields = urllib.urlencode (data)
@@ -70,5 +72,6 @@ class Curl:
 
 		http_status = self.curl.getinfo (pycurl.HTTP_CODE)
 		content = self.reader.getvalue ()
+		session_cookie = self.curl.getinfo (pycurl.INFO_COOKIELIST)
 
-		return content, http_status
+		return content, http_status, session_cookie
