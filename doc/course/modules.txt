@@ -1,0 +1,5 @@
+course文件夹中包含以下文件:
+	__init__.py
+	Curl.py       这是对pycurl一些常用操作的封装
+	CourseSel.py  这是课程网站访问类，目前可以登陆和下载课表
+	test.py       这是对功能进行测试的文件
